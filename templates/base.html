@@ -11,16 +11,29 @@
     
 </head>
 <body class="bg-gray-100 text-gray-900">
-
-    <!-- Navbar -->
     <nav class="bg-blue-500 text-white p-4 shadow-md">
         <div class="container mx-auto flex justify-between">
-            <a href="{% url 'list_product' %}" class="text-lg font-bold">Mi Tienda</a>
+            <a href="{% url 'list_product' %}" class="text-lg font-bold">Coffee Shop</a>
             <a href="{% url 'add_product' %}" class="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200">
-                Agregar Producto
+                Mi pedido
             </a>
-        </div>
-    </nav>
+
+    {% if user.is_authenticated %}
+      <!-- Navbar -->
+       <form method="POST", action="{% url "logout" %}">
+        {% csrf_token %}
+        <button type ="submit" class="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200" >Cerrar Sesion</button>
+       </form>
+        <p  class="text-lg font-bold">Bienvenido, {{user.username}}</p>
+        <a href="{% url 'add_product' %}" class="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200">
+            Agregar Producto
+        </a>
+           
+    {% else %}
+        <a href="{% url 'login' %}" class="text-lg font-bold">Iniciar Sesion</a>
+    {% endif %}
+    </div>
+  </nav>
 
     <!-- Contenido dinámico -->
     <div class="container mx-auto mt-10 px-4">
