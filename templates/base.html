@@ -4,42 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Mi Tienda{% endblock %}</title>
+    <title>{% block title %}Coffee Shop{% endblock %}</title>
     
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <nav class="bg-blue-500 text-white p-4 shadow-md">
-        <div class="container mx-auto flex justify-between">
-            <a href="{% url 'list_product' %}" class="text-lg font-bold">Coffee Shop</a>
-            <a href="{% url 'add_product' %}" class="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200">
-                Mi pedido
+<body class="bg-gray-50 text-gray-900">
+
+    <nav class="bg-white border-b border-gray-200 py-3 shadow-sm">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            
+            <a href="{% url 'list_product' %}" class="flex items-center gap-2 group">
+                <span class="text-2xl font-black text-blue-600 tracking-tight group-hover:text-blue-700 transition">
+                    COFFEE<span class="text-gray-800">SHOP</span>
+                </span>
             </a>
 
-    {% if user.is_authenticated %}
-      <!-- Navbar -->
-       <form method="POST", action="{% url "logout" %}">
-        {% csrf_token %}
-        <button type ="submit" class="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200" >Cerrar Sesion</button>
-       </form>
-        <p  class="text-lg font-bold">Bienvenido, {{user.username}}</p>
-        <a href="{% url 'add_product' %}" class="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200">
-            Agregar Producto
-        </a>
-           
-    {% else %}
-        <a href="{% url 'login' %}" class="text-lg font-bold">Iniciar Sesion</a>
-    {% endif %}
-    </div>
-  </nav>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="{% url 'list_product' %}" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition">Inicio</a>
+                <a href="{% url 'my_order' %}" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition">Mis Pedidos</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'add_product' %}" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition">Gestionar Inventario</a>
+                {% endif %}
+            </div>
 
-    <!-- Contenido dinámico -->
-    <div class="container mx-auto mt-10 px-4">
+            <div class="flex items-center gap-4">
+                {% if user.is_authenticated %}
+                    <div class="flex items-center gap-3 border-l pl-4 border-gray-200">
+                        <span class="hidden sm:inline text-sm text-gray-500">Hola, <span class="font-semibold text-gray-800">{{ user.username }}</span></span>
+                        
+                        <form method="POST" action="{% url 'logout' %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="text-sm bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-red-50 hover:text-red-600 transition font-medium">
+                                Salir
+                            </button>
+                        </form>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-sm font-semibold text-blue-600 hover:text-blue-700">
+                        Iniciar Sesión
+                    </a>
+                    <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-700 shadow-lg shadow-blue-200 transition">
+                        Registrarse
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto mt-8 px-4">
         {% block content %}
         {% endblock %}
-    </div>
+    </main>
 
 </body>
 </html>
